@@ -82,3 +82,6 @@ appending a spec to the registry.
 
 Upstream: OLMo 2 (AI2) for base + stage-2 checkpoints and the OLMES protocol;
 EasyDeL for the JAX/Flax models; Tülu 3 for the chat-format eval suite.
+
+## Support
+This work was supported by Google’s TPU Research Cloud (TRC) program.
