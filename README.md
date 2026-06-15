@@ -24,14 +24,12 @@ Full numbers in [`results/README.md`](results/README.md).
 
 ## Setup
 
-Install deps with uv: `uv sync`
+Install deps with uv —`uv sync`
 
-Requires a multi-host TPU (validated on v4-32, v5e-16, v6e-16), a GCS bucket,
-WandB, and an HF token. Set `GCS_BUCKET`, `GCP_PROJECT`, `TPU_NAME`,
-`TPU_ZONE`, `WANDB_API_KEY`, `HF_TOKEN` in the environment.
+Requires a multi-host TPU, a GCS bucket, WandB, and an HF token. Considering setting env vars such as`GCS_BUCKET`, `GCP_PROJECT`, `TPU_NAME`,
+`TPU_ZONE`, `WANDB_API_KEY`, and `HF_TOKEN`.
 
-Each entry point is a plain Python module — write your own launch wrappers
-to suit your TPU orchestration. Module entry points:
+Module entry points:
 
 - `python -m midtraining.train` — continued pretrain
 - `python -m sft.train` — SFT
@@ -45,9 +43,6 @@ Helper scripts:
 - `src/midtraining/scripts/bake_global_shuffle.py` — physically apply the
   PCG64 shuffle so training can stream shards sequentially.
 - `src/sft/scripts/eval_holdout_loss.py` — SFT-loss on a held-out split.
-- `src/eval/scripts/aggregate_results.py` — pull bench JSONs from GCS and
-  rebuild the `results/` tables.
-- `src/eval/scripts/aggregate_our_sft.py` — same for the SFT-suite results.
 
 Models live in `src/sft/registry.py` (`olmo-1b`, `olmo2-1b`, `olmo2-13b`,
 `olmo3-7b`, `smollm3-3b`). SFT datasets in `src/sft/data.py`. Add either by
