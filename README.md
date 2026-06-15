@@ -1,16 +1,14 @@
-# Plasticity
+# OLMo2 JAX Plasticity Experiments
 
-JAX/EasyDeL pipeline for **continued pretraining ("midtraining"), SFT, and
-OLMES-faithful evaluation** of OLMo 2 1B on Google Cloud TPUs.
+JAX/EasyDeL pipeline for continued pretraining/ midtraining, SFT, and
+OLMES evaluation of OLMo 2 1B on Google Cloud TPUs.
 
 ## Findings
 
-> Under a fixed 50B-token Dolmino midtrain, the peak post-midtrain score on
-> **GSM8K, AGIEval, WinoGrande, MMLU, and TriviaQA** lands on stage-1
-> checkpoints at **1200k–1600k**, well before stage-1 ends (1907k) — and at
-> those bases our midtrain also **beats the released `stage2-ingredient3`**
-> (AI2's published midtrain on stage-1 final) on knowledge / reasoning
-> tasks:
+> Given 50B-token Dolmino midtraining, the peak post-midtrain performance on
+> GSM8K, AGIEval, WinoGrande, MMLU, and TriviaQA occurs after
+> 1200k–1600k steps, well before pre-training ends at 1907k steps — and at
+> those bases our midtrain also beats the released midtrained checkpoint (full pretraining followed by midtraining) on some knowledge / reasoning tasks:
 >
 > | task       | our best midtrain | released `stage2-ingredient3` | gap     |
 > |---         |---                |---                            |---      |
@@ -23,33 +21,6 @@ OLMES-faithful evaluation** of OLMo 2 1B on Google Cloud TPUs.
 > downstream training.
 
 Full numbers in [`results/README.md`](results/README.md).
-
-## Repo uses
-
-- **JAX-on-TPU recipe for OLMo 2** — HF→EasyDeL loading from GCS, JAX mesh
-  setup, per-host DP vs multi-host FSDP, FusedClippedAdamW (`src/sft/model.py`,
-  `src/sft/registry.py`, `src/midtraining/train.py`).
-- **EasyDeL training and eval examples** — every bench is a self-contained
-  EasyDeL script; `_common.py` and `_sft_common.py` factor out the shared
-  mesh and scoring helpers.
-- **OLMES-faithful reimplementation in JAX** — matches OLMES on the released
-  OLMo 2 1B base to within engine noise across 9 tasks (see
-  [`results/README.md`](results/README.md)). Useful as a reference for
-  `*::olmes` / `*::tulu` configs outside the HF/vLLM stack.
-- **Empirical plasticity data on OLMo 2 1B** — which intermediate stage-1
-  checkpoints retain the most downstream-learning capacity. See "Headline
-  finding" above and `results/README.md`.
-
-## Pipelines
-
-| pipeline       | what it does | code |
-|---             |---           |---   |
-| `midtraining/` | Custom JAX/optax loop. 50B-token continued pretrain on Dolmino over an arbitrary base checkpoint. Resumable, preemption-safe. | `src/midtraining/` |
-| `sft/`         | Custom JAX/optax SFT loop. Completion-only loss, chat templates, FSDP / per-host DP. | `src/sft/` |
-| `eval/`        | OLMES-matched benches: ARC-C, HellaSwag, MMLU(+Pro), WinoGrande, GSM8K, NQ, TriviaQA, AGIEval, plus the chat SFT suite (BBH, MATH, PopQA, IFEval, TruthfulQA). | `src/eval/` |
-
-All three share `sft/registry.py` (model specs), `sft/model.py` (HF→EasyDeL
-loader, JAX mesh), and a GCS layout.
 
 ## Setup
 
@@ -84,4 +55,4 @@ Upstream: OLMo 2 (AI2) for base + stage-2 checkpoints and the OLMES protocol;
 EasyDeL for the JAX/Flax models; Tülu 3 for the chat-format eval suite.
 
 ## Support
-This work was supported by Google’s TPU Research Cloud (TRC) program.
+This work was supported by Google’s TPU Research Cloud (TRC) program: https://sites.research.google/trc/.
