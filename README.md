@@ -24,6 +24,8 @@ Full numbers in [`results/README.md`](results/README.md).
 
 ## Setup
 
+Install deps with uv: `uv sync`
+
 Requires a multi-host TPU (validated on v4-32, v5e-16, v6e-16), a GCS bucket,
 WandB, and an HF token. Set `GCS_BUCKET`, `GCP_PROJECT`, `TPU_NAME`,
 `TPU_ZONE`, `WANDB_API_KEY`, `HF_TOKEN` in the environment.
