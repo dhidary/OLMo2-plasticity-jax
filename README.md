@@ -10,7 +10,7 @@ OLMES evaluation of OLMo 2 1B on Google Cloud TPUs.
 > 1200k–1600k steps, well before pre-training ends at 1907k steps — and at
 > those bases our midtrain also beats the released midtrained checkpoint (full pretraining followed by midtraining) on some knowledge / reasoning tasks:
 >
-> | task       | our best midtrain | released `stage2-ingredient3` | gap     |
+> | task       | best midtrain | offical released `stage2-ingredient3` (1907k) | gap     |
 > |---         |---                |---                            |---      |
 > | GSM8K      | 0.4906 (base 1200k) | 0.4370                      | **+5.4pt** |
 > | WinoGrande | 0.6701 (base 1400k) | 0.6654                      | +0.5pt  |
